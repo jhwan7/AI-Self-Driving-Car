@@ -74,7 +74,7 @@ class Car(Widget):
         self.pos = Vector(*self.velocity) + self.pos # updating the position of the car according to its last position and velocity
         self.rotation = rotation # getting the rotation of the car
         self.angle = self.angle + self.rotation # updating the angle
-        self.sensor1 = Vector(30, 0).rotate(self.angle) + self.pos # updating the position of sensor 1
+        self.sensor1 = Vector(30, 0).rotate(self.angle) + self.pos # updating the position of sensor 1, 30 is the distance btwn the sensor and the car
         self.sensor2 = Vector(30, 0).rotate((self.angle+30)%360) + self.pos # updating the position of sensor 2
         self.sensor3 = Vector(30, 0).rotate((self.angle-30)%360) + self.pos # updating the position of sensor 3
         self.signal1 = int(np.sum(sand[int(self.sensor1_x)-10:int(self.sensor1_x)+10, int(self.sensor1_y)-10:int(self.sensor1_y)+10]))/400. # getting the signal received by sensor 1 (density of sand around sensor 1)
