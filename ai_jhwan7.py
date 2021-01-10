@@ -66,3 +66,16 @@ class ReplayMemory(object):
          # only store "capacity" amounts of event. Remove if it surpasses.
          if len(self.memory) > self.capacity:
              del self.memory[0]
+             
+    # the batch of data needs to be selected with caution.
+    def sample (self, batch_size): 
+        # zip (*): reshapes the list to a new form. Needed to put it into torch variables
+        samples = zip(*random.sample(self.memory, batch_size))
+        
+        # map samples to torch variables
+        # arg1: function to transform samples to torch variables, arg2: the sample
+        # Variable(): converts samples to torch variable.
+        # for each batch we need to concactenate it to the first dimension. Ensures everything is well alligned (states, action, and rewards responds to the same time, T)
+        return map(lambda x: Variable(torch.cat(x, 0)), samples)
+    
+    
