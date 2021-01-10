@@ -60,3 +60,9 @@ class ReplayMemory(object):
         # stores the last "capacity" amount of states
         self.memory = []
         
+    def push(self, event): # event is defined by 4 elements lastState, newState, lastAction, lastReward
+         self.memory.append(event)
+         
+         # only store "capacity" amounts of event. Remove if it surpasses.
+         if len(self.memory) > self.capacity:
+             del self.memory[0]
