@@ -20,9 +20,6 @@ from autograd import Variable
 
 class Network(nn.Module):
     
-    # this can be arbitrarily chosen, 30 is most optimized size after multiple trials
-    hidden_size = 30
-    
     def __init__(self, input_size, output_size):
         # initialize object using nn.Module constructor
         super(Network, self).__init__()
@@ -31,11 +28,14 @@ class Network(nn.Module):
         self.input_size = input_size
         self.output_size = output_size
         
+        # this can be arbitrarily chosen, 30 is most optimized size after multiple trials
+        self.hidden_size = 30
+        
         # connect the neurons from the inner layer to the hidden layer, "fc" means "Full Connection (Linear)" : all neurons of the input layer is connected to the hidden layer.
-        self.fc1 = nn.Linear(input_size, hidden_size)
+        self.fc1 = nn.Linear(input_size, self.hidden_size)
         
         # connect the neurons from the hidden layer to the output layer
-        self.fc2 = nn.Linear(hidden_size, output_size)  
+        self.fc2 = nn.Linear(self.hidden_size, output_size)  
         
     # determine and return the q-values after it is processed with the AI using the input "state"
     def forward(self, state):
@@ -46,4 +46,5 @@ class Network(nn.Module):
         #  From the full connection between the hidden and output layer, pass on the hidden layer input to get the resulting output neurons.
         # This will not be directly interpreted as the resulting action yet. It will go through a Softmax function to finalize the action
         q_values = self.fc2(hidden_layer_neuron)
-        return q_values
+        return q_values 
+    
