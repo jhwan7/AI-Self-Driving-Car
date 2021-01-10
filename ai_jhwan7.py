@@ -48,3 +48,15 @@ class Network(nn.Module):
         q_values = self.fc2(hidden_layer_neuron)
         return q_values 
     
+# implement Experience Replay 
+# instead of updating every iteration when the state changes, we hold experience in memory. Enhance the machine learning in long term correlation
+class ReplayMemory(object):
+    
+    def __init__(self, capacity = 100):
+        
+        # defines the length of the array that represents the memory
+        self.capacity = capacity
+        
+        # stores the last "capacity" amount of states
+        self.memory = []
+        
