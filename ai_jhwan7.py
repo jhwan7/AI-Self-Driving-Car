@@ -109,8 +109,16 @@ class Dqn():
         self.last_reward = 0;
         
         
+    def select_action (self, input_state):
+        # generate the Q values required in Softmax by using our model that generates Q values.
+        probs = F.softmax(self.model(Variable(input_state, volatile = True)) * 7) # Temperature (T) = How sure the AI agent is about an action, Bigger T increases the certainty of which action to take
         
+        # multinomial returns a random value depending on the property
+        action = probs.multinomial()
         
+        # action returns with fake batch, so we need to get data at index 0,0 where our action is stored
+        return action.data[0,0]
+    
         
         
         
