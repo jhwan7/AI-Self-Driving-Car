@@ -79,3 +79,68 @@ class ReplayMemory(object):
         return map(lambda x: Variable(torch.cat(x, 0)), samples)
     
     
+# Implement Deep Q Learning
+
+class Dqn():
+    
+    # take in all args needed for the Network, ReplayMemory class + the gamma parameter
+    def __init__(self, input_size, output_size, gamma):
+        self.gamma = gamma
+        
+        # reward window, mean of the last 100 rewards
+        self.reward_window = []
+        
+        # create the actual model
+        self.model = Network(input_size, output_size)
+        
+        # create the memory
+        self.memory = ReplayMemory(100000)
+        
+        # optimizer, pass model parameters and learning rate
+        self.optimizer = optim.Adam(self.model.parameters(), lr =0.001 )
+        
+        # Network expectes data to come in as a batch in the first dimension. We introduce a fake dimension which corresponds to the batch
+        self.last_state = torch.Tensor(input_size).unsqueeze(0)
+        
+        # index representing which action it took
+        self.last_action = 0;
+        
+        # float number that represents the reward
+        self.last_reward = 0;
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
