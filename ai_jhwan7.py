@@ -35,4 +35,15 @@ class Network(nn.Module):
         self.fc1 = nn.Linear(input_size, hidden_size)
         
         # connect the neurons from the hidden layer to the output layer
-        self.fc2 = nn.Linear(hidden_size, output_size)
+        self.fc2 = nn.Linear(hidden_size, output_size)  
+        
+    # determine and return the q-values after it is processed with the AI using the input "state"
+    def forward(self, state):
+        # activate the hidden neurons, by applying the rectifier (relu) function
+        # get hidden neurons by passing the inputState through the fc1 (Passing input values to the hidden neurons)
+        hidden_layer_neuron = F.relu(self.fc1(state))
+        
+        #  From the full connection between the hidden and output layer, pass on the hidden layer input to get the resulting output neurons.
+        # This will not be directly interpreted as the resulting action yet. It will go through a Softmax function to finalize the action
+        q_values = self.fc2(hidden_layer_neuron)
+        return q_values
