@@ -14,7 +14,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import torch.autograd as autograd
-from autograd import Variable
+from torch.autograd import Variable
 
 # create the architecture of the Neural Network
 
@@ -144,14 +144,14 @@ class Dqn():
         new_state = torch.Tensor(new_signal).float().unsqueeze(0)
         
         # update memory with the new_state
-        self.memory.push((self.last_state, new_state, torch.LongTensor([int(self.last_action)]), torch.Tensor([ self.last_reward])))
+        self.memory.push((self.last_state, new_state, torch.LongTensor([int(self.last_action)]), torch.Tensor([self.last_reward])))
         
         # get the predicted action from the model
         action = self.select_action(new_state)
         
         # re-learn with the new action, and inputs
         if len(self.memory.memory) > 100: 
-            batch_state, batch_next_state, batch_reward, batch_action = self.memory.sample(100)
+            batch_state, batch_next_state, batch_action, batch_reward = self.memory.sample(100)
             self.learn(batch_state, batch_next_state, batch_reward, batch_action)
             
         # After generating action, and re-learn. Its old, so re-initialize the "last" variables
