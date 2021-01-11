@@ -171,7 +171,11 @@ class Dqn():
         # sum all entries in the reward_window and divide it by the length. Add 1 to the length to guarantee denominator to be never 0 
         return sum(self.reward_window)/(len(self.reward_window) + 1)
     
-    
+    def save(self):
+        torch.save({"state_dict": self.model.state_dict(),
+                   "optimizer": self.optimizer.state_dict()
+                    }, "last_brain.pth")
+                    
         
         
         
