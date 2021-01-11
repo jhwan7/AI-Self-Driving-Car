@@ -139,9 +139,35 @@ class Dqn():
         self.optimizer.step()
         
      
+    def update (self, reward, new_signal):
+        # convert new_signal (3 sensors, + orientation, - orientation) into a torch tensor (float), don't forget about the fake batch.
+        new_state = torch.Tensor(new_signal).float().unsqueeze(0)
         
+        # update memory with the new_state
+        self.memory.push((self.last_state, new_state, torch.LongTensor([int(self.last_action)]), torch.Tensor([ self.last_reward])))
+        
+        # get the predicted action from the model
+        action = self.select_action(new_state)
+        
+        # re-learn with the new action, and inputs
+        if len(self.memory.memory) > 100: 
+            batch_state, batch_next_state, batch_reward, batch_action = self.memory.sample(100)
+            self.learn(batch_state, batch_next_state, batch_reward, batch_action)
+            
+        # After generating action, and re-learn. Its old, so re-initialize the "last" variables
+        self.last_action = action
+        self.last_state = new_state
+        self.last_reward = reward
+        self.reward_window.append(reward) 
+        
+        # update the reward_window with accordance to the max size.
+        if len(self.reward_window) > 1000:
+            del self.reward_window[0]
+        
+        # return the action the Car will take.
+        return action
     
-        
+            
         
         
         
