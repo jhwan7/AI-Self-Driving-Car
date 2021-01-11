@@ -167,9 +167,11 @@ class Dqn():
         # return the action the Car will take.
         return action
     
-            
-        
-        
+    def score(self):
+        # sum all entries in the reward_window and divide it by the length. Add 1 to the length to guarantee denominator to be never 0 
+        return sum(self.reward_window)/(len(self.reward_window) + 1)
+    
+    
         
         
         
