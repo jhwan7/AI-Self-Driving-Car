@@ -139,25 +139,25 @@ class Game(Widget):
 
         if sand[int(self.car.x),int(self.car.y)] > 0:
             self.car.velocity = Vector(1, 0).rotate(self.car.angle)
-            last_reward = -1
+            last_reward = -1.7
         else: # otherwise
             self.car.velocity = Vector(6, 0).rotate(self.car.angle)
-            last_reward = -0.2
+            last_reward = -0.5
             if distance < last_distance:
-                last_reward = 0.1
+                last_reward = 0.2
 
         if self.car.x < 10:
             self.car.x = 10
-            last_reward = -1
+            last_reward = -1.7
         if self.car.x > self.width - 10:
             self.car.x = self.width - 10
-            last_reward = -1
+            last_reward = -1.7
         if self.car.y < 10:
             self.car.y = 10
-            last_reward = -1
+            last_reward = -1.7
         if self.car.y > self.height - 10:
             self.car.y = self.height - 10
-            last_reward = -1
+            last_reward = -1.7
 
         if distance < 100:
             goal_x = self.width-goal_x

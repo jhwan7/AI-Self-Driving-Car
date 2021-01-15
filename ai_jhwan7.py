@@ -33,19 +33,19 @@ class Network(nn.Module):
         
         # connect the neurons from the inner layer to the hidden layer, "fc" means "Full Connection (Linear)" : all neurons of the input layer is connected to the hidden layer.
         self.fc1 = nn.Linear(input_size, self.hidden_size)
-        
+        self.fc2 = nn.Linear(self.hidden_size, self.hidden_size)
         # connect the neurons from the hidden layer to the output layer
-        self.fc2 = nn.Linear(self.hidden_size, output_size)  
+        self.fc3 = nn.Linear(self.hidden_size, output_size)  
         
     # determine and return the q-values after it is processed with the AI using the input "state"
     def forward(self, state):
         # activate the hidden neurons, by applying the rectifier (relu) function
         # get hidden neurons by passing the inputState through the fc1 (Passing input values to the hidden neurons)
-        hidden_layer_neuron = F.relu(self.fc1(state))
-        
+        hidden_layer_neuron1 = F.relu(self.fc1(state))
+        hidden_layer_neuron2 = F.relu(self.fc2(hidden_layer_neuron1))
         #  From the full connection between the hidden and output layer, pass on the hidden layer input to get the resulting output neurons.
         # This will not be directly interpreted as the resulting action yet. It will go through a Softmax function to finalize the action
-        q_values = self.fc2(hidden_layer_neuron)
+        q_values = self.fc3(hidden_layer_neuron2)
         return q_values 
     
 # implement Experience Replay 
@@ -111,7 +111,7 @@ class Dqn():
         
     def select_action (self, input_state):
         # generate the Q values required in Softmax by using our model that generates Q values.
-        probs = F.softmax(self.model(Variable(input_state, volatile = True)) * 7) # Temperature (T) = How sure the AI agent is about an action, Bigger T increases the certainty of which action to take
+        probs = F.softmax(self.model(Variable(input_state, volatile = True)) * 100) # Temperature (T) = How sure the AI agent is about an action, Bigger T increases the certainty of which action to take
         
         # multinomial returns a random value depending on the property
         action = probs.multinomial()
